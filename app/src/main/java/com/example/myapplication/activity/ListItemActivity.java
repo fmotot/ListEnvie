@@ -33,45 +33,51 @@ public class ListItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_item);
 
         list = findViewById(R.id.item_list);
-                Toast.makeText(ListItemActivity.this, "YOUHOUOU !!!", Toast.LENGTH_LONG).show();
 
+        /**
+         * Open link on browser on click
+         */
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                String url = ((Item)list.getAdapter().getItem(i)).getLink();
+                String url = ((Item) list.getAdapter().getItem(i)).getLink();
                 Uri webpage = null;
 
                 if (!url.startsWith("http://") && !url.startsWith("https://")) {
                     webpage = Uri.parse("http://" + url);
-                }
-                else {
+                } else {
                     webpage = Uri.parse(url);
                 }
 
-                if (url != null){
+                if (url != null) {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, webpage);
                     startActivity(browserIntent);
                 }
             }
         });
 
-//        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//
-//
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Item item = (Item)list.getAdapter().getItem(i);
-//
-//                if (item != null){
-//                    Intent intent = new Intent(ListItemActivity.this, ItemActivity.class);
-//                    intent.putExtra(KEY_ITEM, item);
-//                    startActivity(intent);
-//                }
-//                return true;
-//            }
-//        });
+        /**
+         * Modifying activity on long click
+         */
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Item item = (Item) list.getAdapter().getItem(i);
 
+                if (item != null) {
+                    Intent intent = new Intent(ListItemActivity.this, ItemActivity.class);
+                    intent.putExtra(KEY_ITEM, item);
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
+
+
+        /**
+         * Fill the list with items using the adapter
+         */
         ItemViewModel vm = ViewModelProviders.of(this).get(ItemViewModel.class);
 
         LiveData<List<Item>> observer = vm.get();
