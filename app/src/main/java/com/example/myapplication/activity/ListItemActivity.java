@@ -38,11 +38,19 @@ public class ListItemActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Item item = (Item)list.getAdapter().getItem(i);
 
+                String url = ((Item)list.getAdapter().getItem(i)).getLink();
+                Uri webpage = null;
 
-                if (item != null){
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getLink()));
+                if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                    webpage = Uri.parse("http://" + url);
+                }
+                else {
+                    webpage = Uri.parse(url);
+                }
+
+                if (url != null){
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, webpage);
                     startActivity(browserIntent);
                 }
             }
