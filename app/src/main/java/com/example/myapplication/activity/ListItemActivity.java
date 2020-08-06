@@ -5,11 +5,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,54 +27,56 @@ public class ListItemActivity extends AppCompatActivity {
 
     public static final String KEY_ITEM = "item";
 
-    private ListView list = null;
+    private RecyclerView listRecyclerView = null;
+    private List<Item> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_item);
 
-        list = findViewById(R.id.item_list);
+        listRecyclerView = findViewById(R.id.item_list);
+        items =
 
         /**
          * Open link on browser on click
          */
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                String url = ((Item) list.getAdapter().getItem(i)).getLink();
-                Uri webpage = null;
-
-                if (!url.startsWith("http://") && !url.startsWith("https://")) {
-                    webpage = Uri.parse("http://" + url);
-                } else {
-                    webpage = Uri.parse(url);
-                }
-
-                if (url != null) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, webpage);
-                    startActivity(browserIntent);
-                }
-            }
-        });
+//        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//
+//                String url = ((Item) list.getAdapter().getItem(i)).getLink();
+//                Uri webpage = null;
+//
+//                if (!url.startsWith("http://") && !url.startsWith("https://")) {
+//                    webpage = Uri.parse("http://" + url);
+//                } else {
+//                    webpage = Uri.parse(url);
+//                }
+//
+//                if (url != null) {
+//                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, webpage);
+//                    startActivity(browserIntent);
+//                }
+//            }
+//        });
 
         /**
          * Modifying activity on long click
          */
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Item item = (Item) list.getAdapter().getItem(i);
-
-                if (item != null) {
-                    Intent intent = new Intent(ListItemActivity.this, ItemActivity.class);
-                    intent.putExtra(KEY_ITEM, item);
-                    startActivity(intent);
-                }
-                return true;
-            }
-        });
+//        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Item item = (Item) list.getAdapter().getItem(i);
+//
+//                if (item != null) {
+//                    Intent intent = new Intent(ListItemActivity.this, ItemActivity.class);
+//                    intent.putExtra(KEY_ITEM, item);
+//                    startActivity(intent);
+//                }
+//                return true;
+//            }
+//        });
 
 
         /**
@@ -85,7 +89,7 @@ public class ListItemActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Item> items) {
 
-                ItemAdapter adapter = new ItemAdapter(ListItemActivity.this, R.layout.style_item_list, items);
+                RecyclerView.Adapter adapter = new ItemAdapter(ListItemActivity.this, R.layout.style_item_list, items);
                 list.setAdapter(adapter);
             }
         });
