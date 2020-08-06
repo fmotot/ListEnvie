@@ -30,7 +30,7 @@
 
             android:onClick="onClickAddItem"
             android:src="@drawable/ic_add_shopping_cart_black_24dp"
-            android:tint="#673AB7"
+            android:tint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="@id/item_list"
             app:layout_constraintRight_toRightOf="parent" />
 

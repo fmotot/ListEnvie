@@ -33,11 +33,13 @@ public class ListItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_item);
 
         list = findViewById(R.id.item_list);
+                Toast.makeText(ListItemActivity.this, "YOUHOUOU !!!", Toast.LENGTH_LONG).show();
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Item item = (Item)list.getAdapter().getItem(i);
+
 
                 if (item != null){
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getLink()));
@@ -46,26 +48,21 @@ public class ListItemActivity extends AppCompatActivity {
             }
         });
 
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Item item = (Item)list.getAdapter().getItem(i);
-
-                if (item != null){
-                    Intent intent = new Intent(ListItemActivity.this, ItemActivity.class);
-                    intent.putExtra(KEY_ITEM, item);
-                    startActivity(intent);
-                }
-                return true;
-            }
-        });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+//        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//
+//
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Item item = (Item)list.getAdapter().getItem(i);
+//
+//                if (item != null){
+//                    Intent intent = new Intent(ListItemActivity.this, ItemActivity.class);
+//                    intent.putExtra(KEY_ITEM, item);
+//                    startActivity(intent);
+//                }
+//                return true;
+//            }
+//        });
 
         ItemViewModel vm = ViewModelProviders.of(this).get(ItemViewModel.class);
 
@@ -78,6 +75,13 @@ public class ListItemActivity extends AppCompatActivity {
                 list.setAdapter(adapter);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
     }
 
     public void onClickAddItem(View view) {
