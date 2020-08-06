@@ -29,8 +29,8 @@
             android:contentDescription="Ajouter un article"
 
             android:onClick="onClickAddItem"
-            android:src="@android:drawable/ic_input_add"
-            android:tint="@android:color/black"
+            android:src="@drawable/ic_add_shopping_cart_black_24dp"
+            android:tint="#673AB7"
             app:layout_constraintBottom_toBottomOf="@id/item_list"
             app:layout_constraintRight_toRightOf="parent" />
 
