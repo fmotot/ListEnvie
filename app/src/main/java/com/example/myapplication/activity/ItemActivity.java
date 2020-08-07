@@ -1,26 +1,19 @@
 package com.example.myapplication.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.myapplication.R;
-import com.example.myapplication.activity.adapter.ItemAdapter;
-import com.example.myapplication.model.Item;
-import com.example.myapplication.repository.IItemRepository;
-import com.example.myapplication.repository.RepoFactory;
-import com.example.myapplication.view_model.ItemActivityViewModel;
-import com.example.myapplication.view_model.ItemViewModel;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
-import java.util.List;
+import com.example.myapplication.R;
+import com.example.myapplication.activity.adapter.ItemRecyclerViewAdapter;
+import com.example.myapplication.model.Item;
+import com.example.myapplication.view_model.ItemActivityViewModel;
 
 public class ItemActivity extends AppCompatActivity {
 
@@ -34,12 +27,11 @@ public class ItemActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            item = intent.getParcelableExtra(ListItemActivity.KEY_ITEM);
+            item = intent.getParcelableExtra(ItemRecyclerViewAdapter.KEY_ITEM);
         }
 
         LiveData<Item> itemObserver = vm.get(item.getId());
 
-        Log.e("=============== observer in activity", itemObserver.toString());
         itemObserver.observe(this, new Observer<Item>() {
             @Override
             public void onChanged(Item item) {

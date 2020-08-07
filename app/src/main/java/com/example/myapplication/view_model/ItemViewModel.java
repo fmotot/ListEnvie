@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.myapplication.model.Item;
 import com.example.myapplication.repository.IItemRepository;
@@ -19,16 +17,33 @@ public class ItemViewModel extends AndroidViewModel {
 
     private IItemRepository repo;
 
-    private LiveData<List<Item>> observer = null;
+    private LiveData<List<Item>> itemLiveData = null;
+    private List<Item> itemList;
 
     public ItemViewModel(@NonNull Application application) {
         super(application);
+
         repo = RepoFactory.getItemRepository(application);
-        observer = repo.get();
+
+        init();
+
+    }
+
+    private void init() {
+        itemLiveData = repo.get();
     }
 
     public LiveData<List<Item>> get(){
-        return observer;
+
+        if (itemLiveData == null){
+            itemLiveData = new MutableLiveData<>();
+            itemLiveData = repo.get();
+        }
+        else {
+            repo.get();
+        }
+
+        return itemLiveData;
     }
 
     void insert(Item item){

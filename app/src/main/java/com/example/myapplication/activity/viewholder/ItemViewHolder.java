@@ -1,9 +1,11 @@
 package com.example.myapplication.activity.viewholder;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -30,7 +32,10 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
         btn_check = itemView.findViewById(R.id.btn_check_item);
     }
 
-    public void updateWithItem(Item item){
+    public void updateWithItem(final Item item) {
+
+        Log.i("========== ItemViewHolder ============", item.toString());
+
         this.tv_name.setText(item.getName());
         this.tv_price.setText(String.valueOf(item.getPrice()));
         this.tv_description.setText(item.getDescription());
@@ -38,10 +43,8 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         if (item.isPurchased()) {
             this.btn_check.setColorFilter(ContextCompat.getColor(itemView.getContext(), R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN);
-        }
-        else {
+        } else {
             this.btn_check.setColorFilter(ContextCompat.getColor(itemView.getContext(), R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
         }
     }
-
 }

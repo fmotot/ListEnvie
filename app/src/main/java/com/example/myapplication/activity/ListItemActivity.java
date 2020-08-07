@@ -1,23 +1,17 @@
 package com.example.myapplication.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.activity.adapter.ItemAdapter;
+import com.example.myapplication.activity.adapter.ItemRecyclerViewAdapter;
 import com.example.myapplication.model.Item;
 import com.example.myapplication.view_model.ItemViewModel;
 
@@ -27,7 +21,11 @@ public class ListItemActivity extends AppCompatActivity {
 
     public static final String KEY_ITEM = "item";
 
-    private RecyclerView listRecyclerView = null;
+    private RecyclerView listRecyclerView;
+    private ItemRecyclerViewAdapter recyclerViewAdapter;
+    private ItemViewModel vm;
+    private ListItemActivity context;
+
     private List<Item> items;
 
     @Override
@@ -35,62 +33,24 @@ public class ListItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_item);
 
+        context = this;
         listRecyclerView = findViewById(R.id.item_list);
-        items =
+        vm = ViewModelProviders.of(this).get(ItemViewModel.class);
 
-        /**
-         * Open link on browser on click
-         */
-//        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//                String url = ((Item) list.getAdapter().getItem(i)).getLink();
-//                Uri webpage = null;
-//
-//                if (!url.startsWith("http://") && !url.startsWith("https://")) {
-//                    webpage = Uri.parse("http://" + url);
-//                } else {
-//                    webpage = Uri.parse(url);
-//                }
-//
-//                if (url != null) {
-//                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, webpage);
-//                    startActivity(browserIntent);
-//                }
-//            }
-//        });
+        setItemAdapter();
+    }
 
-        /**
-         * Modifying activity on long click
-         */
-//        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Item item = (Item) list.getAdapter().getItem(i);
-//
-//                if (item != null) {
-//                    Intent intent = new Intent(ListItemActivity.this, ItemActivity.class);
-//                    intent.putExtra(KEY_ITEM, item);
-//                    startActivity(intent);
-//                }
-//                return true;
-//            }
-//        });
-
-
-        /**
-         * Fill the list with items using the adapter
-         */
-        ItemViewModel vm = ViewModelProviders.of(this).get(ItemViewModel.class);
-
-        LiveData<List<Item>> observer = vm.get();
-        observer.observe(this, new Observer<List<Item>>() {
+    /**
+     * Fill the list with items using the adapter
+     */
+    private void setItemAdapter() {
+        vm.get().observe(context, new Observer<List<Item>>() {
             @Override
             public void onChanged(List<Item> items) {
-
-                RecyclerView.Adapter adapter = new ItemAdapter(ListItemActivity.this, R.layout.style_item_list, items);
-                list.setAdapter(adapter);
+                recyclerViewAdapter = new ItemRecyclerViewAdapter(context, items);
+                recyclerViewAdapter.onAttachedToRecyclerView(listRecyclerView);
+                listRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+                listRecyclerView.setAdapter(recyclerViewAdapter);
             }
         });
     }
@@ -98,8 +58,6 @@ public class ListItemActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-
     }
 
     public void onClickAddItem(View view) {
