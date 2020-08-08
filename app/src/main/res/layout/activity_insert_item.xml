@@ -91,7 +91,7 @@
             app:layout_constraintTop_toBottomOf="@id/et_item_link" />
 
         <Button
-            android:id="@+id/btn_insert_item"
+            android:id="@+id/btn_update_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="50dp"

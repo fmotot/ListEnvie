@@ -40,7 +40,7 @@ public class ItemActivityViewModel extends AndroidViewModel {
         repo.insert(item);
     }
 
-    void update(Item item){
+    public void update(Item item){
         repo.update(item);
     }
 
