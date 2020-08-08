@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,7 +26,6 @@ public class ListItemActivity extends AppCompatActivity {
     private ItemRecyclerViewAdapter recyclerViewAdapter;
     private ItemViewModel vm;
     private ListItemActivity context;
-
     private List<Item> items;
 
     @Override
@@ -38,6 +38,24 @@ public class ListItemActivity extends AppCompatActivity {
         vm = ViewModelProviders.of(this).get(ItemViewModel.class);
 
         setItemAdapter();
+        setSwipeAction();
+    }
+
+    /**
+     * Permet de définir l'action du swipe sur le recyclerView
+     */
+    private void setSwipeAction() {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                vm.delete(recyclerViewAdapter.getItem(viewHolder.getAdapterPosition()));
+            }
+        }).attachToRecyclerView(listRecyclerView);
     }
 
     /**

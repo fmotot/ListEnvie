@@ -117,6 +117,9 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemViewHolder
         });
     }
 
+    public Item getItem(int position){
+        return items.get(position);
+    }
     /**
      * return the total count of items in the list
      *

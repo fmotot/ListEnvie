@@ -54,7 +54,7 @@ public class ItemViewModel extends AndroidViewModel {
         repo.update(item);
     }
 
-    void delete(Item item){
+    public void delete(Item item){
         repo.delete(item);
     }
 
